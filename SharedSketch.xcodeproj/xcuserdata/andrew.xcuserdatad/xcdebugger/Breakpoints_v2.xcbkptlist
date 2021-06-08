@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C61764AD-D43D-4AB9-9B75-C9E96020C5AC"
+            uuid = "EB68E65F-CC73-47BA-8BFE-2FF4C8525571"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shared/DrawingView.swift"
+            filePath = "Shared/DrawingExperience.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "canvasViewDrawingDidChange(_:)"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "init(groupSession:item:localData:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

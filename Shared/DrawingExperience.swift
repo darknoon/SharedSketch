@@ -8,6 +8,7 @@
 import GroupActivities
 import Foundation
 import Combine
+import PencilKit
 
 struct DrawingExperience: GroupActivity {
     typealias Identifier = UUID
@@ -16,7 +17,7 @@ struct DrawingExperience: GroupActivity {
     
     var metadata: GroupActivityMetadata {
         var m = GroupActivityMetadata()
-        m.title = "Shared Drawing ID \(id)"
+        m.title = "Drawing \(id)"
         m.fallbackURL = URL(string: "https://darknoon.com/drawing/\(id)")
         return m
     }
@@ -29,8 +30,13 @@ class DrawingSessionManager : ObservableObject {
     let localData: AnyPublisher<Data, DrawingView.Failure>
 
     private var subscriptions: Set<AnyCancellable> =  []
+    
+    @Published var currentDrawing: PKDrawing = PKDrawing()
 
-    init(groupSession: GroupSession<DrawingExperience>, item: DrawingExperience, localData: AnyPublisher<Data, DrawingView.Failure>) {
+    init(groupSession: GroupSession<DrawingExperience>,
+         item: DrawingExperience,
+         localData: AnyPublisher<Data, DrawingView.Failure>)
+    {
         self.groupSession = groupSession
         self.localData = localData
         self.messenger = GroupSessionMessenger(session: groupSession)
@@ -47,6 +53,17 @@ class DrawingSessionManager : ObservableObject {
             }
         }.store(in: &subscriptions)
 
+        async {
+            for await (message, context) in messenger.messages(of: DrawingMessage.self) {
+                do {
+                    print("Update from participant: \(context.source.id)")
+                    currentDrawing = try PKDrawing(data: message.drawingState)
+                } catch {
+                    print("error updating drawing: \(error)")
+                }
+            }
+        }
+        
     }
 }
 
